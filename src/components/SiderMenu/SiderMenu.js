@@ -9,6 +9,7 @@ import BaseMenu, { getMenuMatches } from './BaseMenu';
 
 const { Sider } = Layout;
 
+const siderMarginTop = 64;
 /**
  * 获得菜单子节点
  * @memberof SiderMenu
@@ -55,6 +56,7 @@ export default class SiderMenu extends PureComponent {
     this.flatMenuKeys = getFlatMenuKeys(props.menuData);
     this.state = {
       openKeys: getDefaultCollapsedSubMenus(props),
+      SiderMarginTop: siderMarginTop,
     };
   }
 
@@ -89,7 +91,7 @@ export default class SiderMenu extends PureComponent {
   render() {
     // const { logo, collapsed, onCollapse, fixSiderbar, theme } = this.props;
     const { collapsed, onCollapse, fixSiderbar, theme } = this.props;
-    const { openKeys } = this.state;
+    const { openKeys, SiderMarginTop } = this.state;
     const defaultProps = collapsed ? {} : { openKeys };
 
     const siderClassName = classNames(styles.sider, {
@@ -102,12 +104,17 @@ export default class SiderMenu extends PureComponent {
         trigger={null}
         collapsible
         collapsed={collapsed}
-        breakpoint="lg"
+        breakpoint="md"
         onCollapse={onCollapse}
         width={256}
         theme={theme}
+        onBreakpoint={broken => {
+          this.setState({
+            SiderMarginTop: broken === true ? 0 : siderMarginTop,
+          });
+        }}
         style={{
-          marginTop: 64,
+          marginTop: SiderMarginTop,
         }}
         className={siderClassName}
       >
@@ -117,14 +124,25 @@ export default class SiderMenu extends PureComponent {
             <h1>电商管理系统</h1>
           </Link>
         </div> */}
-        <BaseMenu
-          {...this.props}
-          mode="inline"
-          handleOpenChange={this.handleOpenChange}
-          onOpenChange={this.handleOpenChange}
-          style={{ padding: '16px 0', width: '100%', overflowX: 'hidden' }}
-          {...defaultProps}
-        />
+        {SiderMarginTop === siderMarginTop ? (
+          <div
+            className={styles.parMenu}
+            style={{
+              width: 256,
+            }}
+          >
+            <a>sdfsf</a>
+          </div>
+        ) : (
+          <BaseMenu
+            {...this.props}
+            mode="inline"
+            handleOpenChange={this.handleOpenChange}
+            onOpenChange={this.handleOpenChange}
+            style={{ padding: '16px 0', width: '100%', overflowX: 'hidden' }}
+            {...defaultProps}
+          />
+        )}
       </Sider>
     );
   }
