@@ -128,7 +128,7 @@ export default class SiderMenu extends PureComponent {
             {...defaultProps}
           />
         ) : (
-          <SiderMenuForPc />
+          <SiderMenuForPc {...this.props} />
         )}
       </Sider>
     );
