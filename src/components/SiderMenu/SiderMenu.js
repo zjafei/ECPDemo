@@ -6,10 +6,10 @@ import { urlToList } from '@/utils/utils';
 // import Link from 'umi/link';
 import styles from './index.less';
 import BaseMenu, { getMenuMatches } from './BaseMenu';
+import SiderMenuForPc from './SiderMenuForPc';
 
 const { Sider } = Layout;
 
-const siderMarginTop = 64;
 /**
  * 获得菜单子节点
  * @memberof SiderMenu
@@ -56,7 +56,6 @@ export default class SiderMenu extends PureComponent {
     this.flatMenuKeys = getFlatMenuKeys(props.menuData);
     this.state = {
       openKeys: getDefaultCollapsedSubMenus(props),
-      SiderMarginTop: siderMarginTop,
     };
   }
 
@@ -90,8 +89,8 @@ export default class SiderMenu extends PureComponent {
 
   render() {
     // const { logo, collapsed, onCollapse, fixSiderbar, theme } = this.props;
-    const { collapsed, onCollapse, fixSiderbar, theme } = this.props;
-    const { openKeys, SiderMarginTop } = this.state;
+    const { collapsed, onCollapse, fixSiderbar, theme, isMobile } = this.props;
+    const { openKeys } = this.state;
     const defaultProps = collapsed ? {} : { openKeys };
 
     const siderClassName = classNames(styles.sider, {
@@ -108,13 +107,8 @@ export default class SiderMenu extends PureComponent {
         onCollapse={onCollapse}
         width={256}
         theme={theme}
-        onBreakpoint={broken => {
-          this.setState({
-            SiderMarginTop: broken === true ? 0 : siderMarginTop,
-          });
-        }}
         style={{
-          marginTop: SiderMarginTop,
+          marginTop: isMobile === true ? 0 : 64,
         }}
         className={siderClassName}
       >
@@ -124,16 +118,7 @@ export default class SiderMenu extends PureComponent {
             <h1>电商管理系统</h1>
           </Link>
         </div> */}
-        {SiderMarginTop === siderMarginTop ? (
-          <div
-            className={styles.parMenu}
-            style={{
-              width: 256,
-            }}
-          >
-            <a>sdfsf</a>
-          </div>
-        ) : (
+        {isMobile === true ? (
           <BaseMenu
             {...this.props}
             mode="inline"
@@ -142,6 +127,8 @@ export default class SiderMenu extends PureComponent {
             style={{ padding: '16px 0', width: '100%', overflowX: 'hidden' }}
             {...defaultProps}
           />
+        ) : (
+          <SiderMenuForPc />
         )}
       </Sider>
     );

@@ -32,6 +32,7 @@ const SiderMenuWrapper = props => {
     >
       <SiderMenu
         {...props}
+        isMobile={isMobile}
         flatMenuKeys={getFlatMenuKeys(menuData)}
         collapsed={isMobile ? false : collapsed}
       />
