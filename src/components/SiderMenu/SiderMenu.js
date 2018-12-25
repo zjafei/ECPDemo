@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import pathToRegexp from 'path-to-regexp';
 import classNames from 'classnames';
 import { urlToList } from '@/utils/utils';
-import Link from 'umi/link';
+// import Link from 'umi/link';
 import styles from './index.less';
 import BaseMenu, { getMenuMatches } from './BaseMenu';
 
@@ -87,7 +87,8 @@ export default class SiderMenu extends PureComponent {
   };
 
   render() {
-    const { logo, collapsed, onCollapse, fixSiderbar, theme } = this.props;
+    // const { logo, collapsed, onCollapse, fixSiderbar, theme } = this.props;
+    const { collapsed, onCollapse, fixSiderbar, theme } = this.props;
     const { openKeys } = this.state;
     const defaultProps = collapsed ? {} : { openKeys };
 
@@ -105,14 +106,17 @@ export default class SiderMenu extends PureComponent {
         onCollapse={onCollapse}
         width={256}
         theme={theme}
+        style={{
+          marginTop: 64,
+        }}
         className={siderClassName}
       >
-        <div className={styles.logo} id="logo">
+        {/* <div className={styles.logo} id="logo">
           <Link to="/">
             <img src={logo} alt="logo" />
             <h1>电商管理系统</h1>
           </Link>
-        </div>
+        </div> */}
         <BaseMenu
           {...this.props}
           mode="inline"
