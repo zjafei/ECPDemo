@@ -202,7 +202,7 @@ export default class BaseMenu extends PureComponent {
         // onOpenChange={handleOpenChange}
         selectedKeys={selectedKeys}
         // style={style}
-        // className={mode === 'horizontal' ? 'top-nav-menu' : ''}
+        className={styles.parMenu}
         // {...props}
       >
         {this.getParMenuItems(menuData)}

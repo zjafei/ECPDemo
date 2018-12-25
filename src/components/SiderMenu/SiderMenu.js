@@ -106,7 +106,7 @@ export default class SiderMenu extends PureComponent {
         breakpoint="md"
         onCollapse={onCollapse}
         width={256}
-        theme={theme}
+        theme="light"
         style={{
           marginTop: isMobile === true ? 0 : 64,
         }}
