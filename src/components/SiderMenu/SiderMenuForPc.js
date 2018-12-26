@@ -234,7 +234,6 @@ export default class BaseMenu extends PureComponent {
       >
         {this.getParMenuItems(menuData, selectedKeys[0])}
       </ul>
-
       // {/* </Menu> */}
     );
   }

@@ -104,9 +104,10 @@
       height: 60px;
       line-height: 60px;
       font-size: 16px;
+      padding: 0 22px !important;
       .anticon {
         font-size: 18px;
-        vertical-align: -0.15em;
+        vertical-align: -0.16em;
       }
     }
   }
@@ -118,5 +119,19 @@
         }
       }
     }
+  }
+}
+
+.showMore {
+  position: absolute;
+  width: 9px;
+  height: 40px;
+  background-color: red;
+  cursor: pointer;
+  top: 50%;
+  margin-top: -82px;
+  transition: width 0.4s;
+  &:hover {
+    width: 18px;
   }
 }

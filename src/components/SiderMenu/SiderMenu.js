@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Layout } from 'antd';
 import pathToRegexp from 'path-to-regexp';
 import classNames from 'classnames';
+import Debounce from 'lodash-decorators/debounce';
 import { urlToList } from '@/utils/utils';
 // import Link from 'umi/link';
 import styles from './index.less';
@@ -59,6 +60,10 @@ export default class SiderMenu extends PureComponent {
     };
   }
 
+  componentWillUnmount() {
+    this.triggerResizeEvent.cancel();
+  }
+
   static getDerivedStateFromProps(props, state) {
     const { pathname } = state;
     if (props.location.pathname !== pathname) {
@@ -69,6 +74,21 @@ export default class SiderMenu extends PureComponent {
     }
     return null;
   }
+
+  /* eslint-disable*/
+  @Debounce(600)
+  triggerResizeEvent() {
+    // eslint-disable-line
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('resize', true, false);
+    window.dispatchEvent(event);
+  }
+
+  toggle = () => {
+    const { collapsed, onCollapse, isMobile } = this.props;
+    onCollapse(!collapsed);
+    this.triggerResizeEvent();
+  };
 
   isMainMenu = key => {
     const { menuData } = this.props;
@@ -116,10 +136,15 @@ export default class SiderMenu extends PureComponent {
       >
         {/* <div className={styles.logo} id="logo">
           <Link to="/">
-            <img src={logo} alt="logo" />
-            <h1>电商管理系统</h1>
+          <img src={logo} alt="logo" />
+          <h1>电商管理系统</h1>
           </Link>
         </div> */}
+        <i
+          className={styles.showMore}
+          onClick={this.toggle}
+          style={collapsed === true ? { left: 60 } : { right: 0 }}
+        />
         {isMobile === true ? (
           <BaseMenu
             {...this.props}
