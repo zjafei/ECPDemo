@@ -36,6 +36,9 @@ export default class BaseMenu extends PureComponent {
     super(props);
     this.getSelectedMenuKeys = memoizeOne(this.getSelectedMenuKeys, isEqual);
     this.flatMenuKeys = this.getFlatMenuKeys(props.menuData);
+    this.state = {
+      parMenuEnter: false,
+    };
   }
 
   getParMenuItems = (menusData, selectedKey) => {
@@ -189,6 +192,7 @@ export default class BaseMenu extends PureComponent {
       // mode,
       location: { pathname },
     } = this.props;
+    const { parMenuEnter } = this.state;
     // if pathname can't match, use the nearest parent's key
     let selectedKeys = this.getSelectedMenuKeys(pathname);
     if (!selectedKeys.length && openKeys) {
@@ -213,7 +217,21 @@ export default class BaseMenu extends PureComponent {
       //   // className={styles.parMenu}
       // // {...props}
       // >
-      <ul className={`ant-menu ant-menu-dark ant-menu-root ant-menu-vertical ${styles.parMenu}`}>
+      <ul
+        className={`ant-menu ant-menu-dark ant-menu-root ant-menu-vertical ${styles.parMenu} ${
+          parMenuEnter === true ? '' : 'ant-menu-inline-collapsed'
+        }`}
+        onMouseEnter={() => {
+          this.setState({
+            parMenuEnter: true,
+          });
+        }}
+        onMouseLeave={() => {
+          this.setState({
+            parMenuEnter: false,
+          });
+        }}
+      >
         {this.getParMenuItems(menuData, selectedKeys[0])}
       </ul>
 
