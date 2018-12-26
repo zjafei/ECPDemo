@@ -12,7 +12,7 @@ import { enquireScreen, unenquireScreen } from 'enquire-js';
 import SiderMenu from '@/components/SiderMenu';
 import Authorized from '@/utils/Authorized';
 // import SettingDrawer from '@/components/SettingDrawer';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 import Footer from './Footer';
 import Header from './Header';
 import Context from './MenuContext';
@@ -113,6 +113,7 @@ class BasicLayout extends React.PureComponent {
     //   });
     // });
     this.enquireHandler = enquireScreen(mobile => {
+      console.log(mobile);
       const { isMobile } = this.state;
       if (isMobile !== mobile) {
         this.setState({
@@ -192,7 +193,8 @@ class BasicLayout extends React.PureComponent {
     const { fixSiderbar, collapsed, layout } = this.props;
     if (fixSiderbar && layout !== 'topmenu' && !isMobile) {
       return {
-        paddingLeft: collapsed ? '80px' : '256px',
+        paddingLeft: collapsed ? '60px' : '256px',
+        backgroundColor: '#fff',
       };
     }
     return null;
@@ -266,7 +268,11 @@ class BasicLayout extends React.PureComponent {
               {...this.props}
             />
           )}
-          <Layout>
+          <Layout
+            style={{
+              backgroundColor: '#fff',
+            }}
+          >
             <Content style={this.getContentStyle()}>
               <Authorized
                 authority={routerConfig && routerConfig.authority}
