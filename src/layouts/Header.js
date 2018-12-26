@@ -6,8 +6,8 @@ import Animate from 'rc-animate';
 import { connect } from 'dva';
 // import router from 'umi/router';
 import GlobalHeader from '@/components/GlobalHeader';
-import TopNavHeader from '@/components/TopNavHeader';
-import Authorized from '@/utils/Authorized';
+// import TopNavHeader from '@/components/TopNavHeader';
+// import Authorized from '@/utils/Authorized';
 import styles from './Header.less';
 
 const { Header } = Layout;
@@ -116,10 +116,12 @@ class HeaderView extends PureComponent {
   };
 
   render() {
-    const { isMobile, handleMenuCollapse, setting } = this.props;
-    const { navTheme, layout, fixedHeader } = setting;
+    // const { isMobile, handleMenuCollapse, setting } = this.props;
+    const { handleMenuCollapse, setting } = this.props;
+    // const { navTheme, layout, fixedHeader } = setting;
+    const { fixedHeader } = setting;
     const { visible } = this.state;
-    const isTop = layout === 'topmenu';
+    // const isTop = layout === 'topmenu';
     // const width = this.getHeadWidth();
     const HeaderDom = visible ? (
       // <Header style={{ padding: 0, width }} className={fixedHeader ? styles.fixedHeader : ''}>
@@ -127,7 +129,7 @@ class HeaderView extends PureComponent {
         style={{ padding: 0, width: '100%' }}
         className={fixedHeader ? styles.fixedHeader : ''}
       >
-        {isTop && !isMobile ? (
+        {/* {isTop && !isMobile ? (
           <TopNavHeader
             theme={navTheme}
             mode="horizontal"
@@ -138,15 +140,15 @@ class HeaderView extends PureComponent {
             // onNoticeVisibleChange={this.handleNoticeVisibleChange}
             {...this.props}
           />
-        ) : (
-          <GlobalHeader
-            onCollapse={handleMenuCollapse}
-            // onNoticeClear={this.handleNoticeClear}
-            onMenuClick={this.handleMenuClick}
-            // onNoticeVisibleChange={this.handleNoticeVisibleChange}
-            {...this.props}
-          />
-        )}
+        ) : ( */}
+        <GlobalHeader
+          onCollapse={handleMenuCollapse}
+          // onNoticeClear={this.handleNoticeClear}
+          onMenuClick={this.handleMenuClick}
+          // onNoticeVisibleChange={this.handleNoticeVisibleChange}
+          {...this.props}
+        />
+        {/* )} */}
       </Header>
     ) : null;
     return (
