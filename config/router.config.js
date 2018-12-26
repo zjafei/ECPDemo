@@ -22,6 +22,7 @@ export default [
         name: 'machine',
         title: '机械认证管理',
         icon: 'safety-certificate',
+        hideChildrenInMenu: true,
         routes: [
           { path: '/machine', redirect: '/machine/application' },
           {

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { Menu, Icon } from 'antd';
 import Link from 'umi/link';
 import isEqual from 'lodash/isEqual';
@@ -8,7 +8,6 @@ import { urlToList } from '@/utils/utils';
 import styles from './index.less';
 
 const { SubMenu } = Menu;
-
 // Allow menu.js config icon as string or ReactNode
 //   icon: 'setting',
 //   icon: 'http://demo.com/icon.png',
@@ -42,14 +41,13 @@ export default class BaseMenu extends PureComponent {
   }
 
   getParMenuItems = (menusData, selectedKey) => {
+    // const { onCollapse, collapsed } = this.props;
     if (!menusData) {
       return [];
     }
     return menusData
       .filter(item => item.name && !item.hideInMenu)
       .map(item => {
-        // make dom
-        // ant-menu-item-selected
         const ItemDom = (
           <li
             className={`ant-menu-item ${selectedKey === item.path ? 'ant-menu-item-selected' : ''}`}
@@ -62,6 +60,10 @@ export default class BaseMenu extends PureComponent {
       })
       .filter(item => item);
   };
+
+  // getParMenuItems = (menusData, parent) => {
+
+  // }
 
   /**
    * Recursively flatten the data
@@ -217,23 +219,25 @@ export default class BaseMenu extends PureComponent {
       //   // className={styles.parMenu}
       // // {...props}
       // >
-      <ul
-        className={`ant-menu ant-menu-dark ant-menu-root ant-menu-vertical ${styles.parMenu} ${
-          parMenuEnter === true ? '' : 'ant-menu-inline-collapsed'
-        }`}
-        onMouseEnter={() => {
-          this.setState({
-            parMenuEnter: true,
-          });
-        }}
-        onMouseLeave={() => {
-          this.setState({
-            parMenuEnter: false,
-          });
-        }}
-      >
-        {this.getParMenuItems(menuData, selectedKeys[0])}
-      </ul>
+      <Fragment>
+        <ul
+          className={`ant-menu ant-menu-dark ant-menu-root ant-menu-vertical ${styles.parMenu} ${
+            parMenuEnter === true ? '' : 'ant-menu-inline-collapsed'
+          }`}
+          onMouseEnter={() => {
+            this.setState({
+              parMenuEnter: true,
+            });
+          }}
+          onMouseLeave={() => {
+            this.setState({
+              parMenuEnter: false,
+            });
+          }}
+        >
+          {this.getParMenuItems(menuData, selectedKeys[0])}
+        </ul>
+      </Fragment>
       // {/* </Menu> */}
     );
   }
