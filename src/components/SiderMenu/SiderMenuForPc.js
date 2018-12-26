@@ -38,7 +38,7 @@ export default class BaseMenu extends PureComponent {
     this.flatMenuKeys = this.getFlatMenuKeys(props.menuData);
   }
 
-  getParMenuItems = menusData => {
+  getParMenuItems = (menusData, selectedKey) => {
     if (!menusData) {
       return [];
     }
@@ -46,7 +46,15 @@ export default class BaseMenu extends PureComponent {
       .filter(item => item.name && !item.hideInMenu)
       .map(item => {
         // make dom
-        const ItemDom = <Menu.Item key={item.path}>{this.getMenuItemPath(item)}</Menu.Item>;
+        // ant-menu-item-selected
+        const ItemDom = (
+          <li
+            className={`ant-menu-item ${selectedKey === item.path ? 'ant-menu-item-selected' : ''}`}
+            key={item.path}
+          >
+            {this.getMenuItemPath(item)}
+          </li>
+        );
         return this.checkPermissionItem(item.authority, ItemDom);
       })
       .filter(item => item);
@@ -195,18 +203,21 @@ export default class BaseMenu extends PureComponent {
     // const { handleOpenChange, style, menuData } = this.props;
     const { menuData } = this.props;
     return (
-      <Menu
-        key="Menu"
-        mode="vertical"
-        theme="dark"
-        // onOpenChange={handleOpenChange}
-        selectedKeys={selectedKeys}
-        // style={style}
-        className={styles.parMenu}
-        // {...props}
-      >
-        {this.getParMenuItems(menuData)}
-      </Menu>
+      // <Menu
+      //   key="Menu"
+      //   mode="vertical"
+      //   theme="dark"
+      //   // onOpenChange={handleOpenChange}
+      //   selectedKeys={selectedKeys}
+      //   // style={style}
+      //   // className={styles.parMenu}
+      // // {...props}
+      // >
+      <ul className={`ant-menu ant-menu-dark ant-menu-root ant-menu-vertical ${styles.parMenu}`}>
+        {this.getParMenuItems(menuData, selectedKeys[0])}
+      </ul>
+
+      // {/* </Menu> */}
     );
   }
 }
