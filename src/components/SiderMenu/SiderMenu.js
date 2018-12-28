@@ -75,6 +75,10 @@ export default class SiderMenu extends PureComponent {
     return null;
   }
 
+  // Get the currently selected menu
+  getSelectedMenuKeys = pathname =>
+    urlToList(pathname).map(itemPath => getMenuMatches(this.flatMenuKeys, itemPath).pop());
+
   /* eslint-disable*/
   @Debounce(600)
   triggerResizeEvent() {
@@ -109,13 +113,38 @@ export default class SiderMenu extends PureComponent {
 
   render() {
     // const { logo, collapsed, onCollapse, fixSiderbar, theme } = this.props;
-    const { collapsed, onCollapse, fixSiderbar, theme, isMobile } = this.props;
+    const {
+      collapsed,
+      menuData,
+      onCollapse,
+      fixSiderbar,
+      theme,
+      isMobile,
+      location: { pathname },
+    } = this.props;
     const { openKeys } = this.state;
     const defaultProps = collapsed ? {} : { openKeys };
-
     const siderClassName = classNames(styles.sider, {
       [styles.fixSiderbar]: fixSiderbar,
       [styles.light]: theme === 'light',
+    });
+
+    let selectedKeys = this.getSelectedMenuKeys(pathname);
+    if (!selectedKeys.length && openKeys) {
+      selectedKeys = [openKeys[openKeys.length - 1]];
+    }
+
+    let hideSidebarIcon = false;
+    menuData.forEach(item => {
+      if (selectedKeys[0] === item.path) {
+        if (
+          item.children === undefined ||
+          item.children.length === 0 ||
+          item.hideChildrenInMenu === true
+        ) {
+          hideSidebarIcon = true;
+        }
+      }
     });
 
     return (
@@ -140,11 +169,13 @@ export default class SiderMenu extends PureComponent {
           <h1>电商管理系统</h1>
           </Link>
         </div> */}
-        <i
-          className={styles.showMore}
-          onClick={this.toggle}
-          style={collapsed === true ? { left: 60 } : { right: 0 }}
-        />
+        {hideSidebarIcon === false && (
+          <i
+            className={styles.showMore}
+            onClick={this.toggle}
+            style={collapsed === true ? { left: 60 } : { right: 0 }}
+          />
+        )}
         {isMobile === true ? (
           <BaseMenu
             {...this.props}

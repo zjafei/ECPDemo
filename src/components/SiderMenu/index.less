@@ -93,10 +93,12 @@
   left: 0;
   background: #172841;
   transition: width 0.3s;
+  transition-timing-function: cubic-bezier(0.69, 0.69, 0.54, 1.74);
   overflow: hidden;
   width: 60px;
   height: auto;
   &:hover {
+    // transition-timing-function: ease-out;
     width: 260px; // box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
   }
   :global {
@@ -130,7 +132,8 @@
   cursor: pointer;
   top: 50%;
   margin-top: -82px;
-  transition: width 0.4s;
+  transition: ease width 0.2s;
+  transition-timing-function: cubic-bezier(0.93, 0.91, 0.24, 1.62);
   &:hover {
     width: 18px;
   }
