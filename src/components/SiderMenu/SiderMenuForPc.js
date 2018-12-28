@@ -40,6 +40,35 @@ export default class BaseMenu extends PureComponent {
     };
   }
 
+  componentWillUpdate(nextProps) {
+    const {
+      collapsed,
+      onCollapse,
+      menuData,
+      location: { pathname: nextPathname },
+    } = nextProps;
+    const {
+      location: { pathname },
+    } = this.props;
+    const selectedKeys = this.getSelectedMenuKeys(nextPathname);
+
+    menuData.forEach(item => {
+      if (selectedKeys[0] === item.path) {
+        if (
+          item.children === undefined ||
+          item.children.length === 0 ||
+          item.hideChildrenInMenu === true
+        ) {
+          onCollapse(true);
+        } else if (pathname !== nextPathname) {
+          onCollapse(false);
+        } else {
+          onCollapse(collapsed);
+        }
+      }
+    });
+  }
+
   getParMenuItems = (menusData, selectedKey) => {
     // const { onCollapse, collapsed } = this.props;
     if (!menusData) {
@@ -192,6 +221,7 @@ export default class BaseMenu extends PureComponent {
       openKeys,
       // theme,
       // mode,
+      menuData,
       location: { pathname },
     } = this.props;
     const { parMenuEnter } = this.state;
@@ -207,7 +237,6 @@ export default class BaseMenu extends PureComponent {
     //   };
     // }
     // const { handleOpenChange, style, menuData } = this.props;
-    const { menuData } = this.props;
     return (
       // <Menu
       //   key="Menu"
