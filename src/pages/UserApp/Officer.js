@@ -197,7 +197,8 @@ class Page extends PureComponent {
                       title: (
                         <Fragment>
                           你确定要
-                          <span className={stateClassName}>{showText}</span>
+                          {showText}
+                          {/* <span className={stateClassName}>{showText}</span> */}
                           认证员 {record.username} ?
                         </Fragment>
                       ),
