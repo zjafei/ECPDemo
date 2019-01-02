@@ -22,7 +22,7 @@ export default [
         name: 'machine',
         title: '机械认证管理',
         icon: 'safety-certificate',
-        hideChildrenInMenu: true,
+        // hideChildrenInMenu: true,
         routes: [
           { path: '/machine', redirect: '/machine/application' },
           {
@@ -76,20 +76,24 @@ export default [
           {
             path: '/license/license',
             name: 'licenseLicense',
-            title: '电商',
+            title: '电商1',
             component: './License/License',
             // hideChildrenInMenu: true,
-            // routes: [
-            //   { path: '/license/license', redirect: '/license/license/list' },
-            //   {
-            //     path: '/license/license/list',
-            //     component: './License/License',
-            //   },
-            //   {
-            //     path: '/license/license/download',
-            //     component: './License/LicenseDownload',
-            //   },
-            // ],
+            routes: [
+              { path: '/license/license', redirect: '/license/license/list' },
+              {
+                name: 'licenseListSub',
+                title: '下载批次',
+                path: '/license/license/list',
+                component: './License/License',
+              },
+              {
+                name: 'licenseDownloadSub',
+                title: '下载列表',
+                path: '/license/license/download',
+                component: './License/LicenseDownload',
+              },
+            ],
           },
           {
             path: '/license/download',
@@ -97,12 +101,12 @@ export default [
             title: '下载批次',
             component: './License/LicenseDownload',
           },
-          // {
-          //   path: '/license/RFID',
-          //   name: 'licenseRFID',
-          //   title: 'RFID',
-          //   component: './License/RFID',
-          // },
+          {
+            path: '/license/RFID',
+            name: 'licenseRFID',
+            title: 'RFID',
+            component: './License/RFID',
+          },
         ],
       },
       {

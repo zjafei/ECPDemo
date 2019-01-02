@@ -8,16 +8,20 @@ import { urlToList } from '@/utils/utils';
 import styles from './index.less';
 
 const { SubMenu } = Menu;
+
 // Allow menu.js config icon as string or ReactNode
-//   icon: 'setting',
-//   icon: 'http://demo.com/icon.png',
-//   icon: <Icon type="setting" />,
-const getIcon = icon => {
+// icon: 'setting',
+// icon: 'http://demo.com/icon.png',
+// icon: <Icon type="setting" />,
+const getIcon = (icon, className) => {
   if (typeof icon === 'string' && icon.indexOf('http') === 0) {
-    return <img src={icon} alt="icon" className={styles.icon} />;
+    return <img src={icon} alt="icon" className={className} />;
   }
+  // if (typeof icon === 'string' && icon.indexOf('icon-') === 0) {
+  //   return <MyIcon type={icon} />;
+  // }
   if (typeof icon === 'string') {
-    return <Icon type={icon} />;
+    return <Icon type={icon} className={className} />;
   }
   return icon;
 };
@@ -35,74 +39,12 @@ export default class BaseMenu extends PureComponent {
     super(props);
     this.getSelectedMenuKeys = memoizeOne(this.getSelectedMenuKeys, isEqual);
     this.flatMenuKeys = this.getFlatMenuKeys(props.menuData);
-    this.state = {
-      parMenuEnter: false,
-    };
   }
 
-  componentWillUpdate(nextProps) {
-    const {
-      collapsed,
-      onCollapse,
-      menuData,
-      location: { pathname: nextPathname },
-    } = nextProps;
-    const {
-      location: { pathname },
-    } = this.props;
-    const selectedKeys = this.getSelectedMenuKeys(nextPathname);
-
-    menuData.forEach(item => {
-      if (selectedKeys[0] === item.path) {
-        if (
-          item.children === undefined ||
-          item.children.length === 0 ||
-          item.hideChildrenInMenu === true
-        ) {
-          onCollapse(true);
-        } else if (pathname !== nextPathname) {
-          onCollapse(false);
-        } else {
-          onCollapse(collapsed);
-        }
-      }
-    });
+  /* eslint-disable*/
+  getParItem(menus, selectedKeys) {
+    return menus.filter(item => pathToRegexp(item.path).test(selectedKeys[0]))[0];
   }
-
-  getParMenuItems = (menusData, selectedKey) => {
-    // const { onCollapse, collapsed } = this.props;
-    if (!menusData) {
-      return [];
-    }
-    return menusData
-      .filter(
-        item =>
-          !(
-            !item.name ||
-            (!item.path &&
-              (item.children === undefined ||
-                item.children.length === 0 ||
-                item.hideChildrenInMenu === true))
-          )
-      )
-      .map(item => {
-        const ItemDom = (
-          <li
-            className={`ant-menu-item ${selectedKey === item.path ? 'ant-menu-item-selected' : ''}`}
-            key={item.path}
-          >
-            {this.getMenuItemPath(item)}
-          </li>
-        );
-        return this.checkPermissionItem(item.authority, ItemDom);
-      })
-      .filter(item => item);
-  };
-
-  // getParMenuItems = (menusData, parent) => {
-
-  // }
-
   /**
    * Recursively flatten the data
    * [{path:string},{path:string}] => {path,path2}
@@ -153,7 +95,7 @@ export default class BaseMenu extends PureComponent {
           title={
             item.icon ? (
               <span>
-                {getIcon(item.icon)}
+                {/* {getIcon(item.icon)} */}
                 <span>{name}</span>
               </span>
             ) : (
@@ -177,13 +119,13 @@ export default class BaseMenu extends PureComponent {
   getMenuItemPath = item => {
     const { name } = item;
     const itemPath = this.conversionPath(item.path);
-    const icon = getIcon(item.icon);
+    // const icon = getIcon(item.icon);
     const { target } = item;
     // Is it a http link
     if (/^https?:\/\//.test(itemPath)) {
       return (
         <a href={itemPath} target={target}>
-          {icon}
+          {/* {icon} */}
           <span>{name}</span>
         </a>
       );
@@ -202,7 +144,7 @@ export default class BaseMenu extends PureComponent {
             : undefined
         }
       >
-        {icon}
+        {/* {icon} */}
         <span>{name}</span>
       </Link>
     );
@@ -228,55 +170,51 @@ export default class BaseMenu extends PureComponent {
   render() {
     const {
       openKeys,
-      // theme,
-      // mode,
+      collapsed,
       menuData,
+      handleOpenChange,
       location: { pathname },
     } = this.props;
-    const { parMenuEnter } = this.state;
     // if pathname can't match, use the nearest parent's key
     let selectedKeys = this.getSelectedMenuKeys(pathname);
     if (!selectedKeys.length && openKeys) {
       selectedKeys = [openKeys[openKeys.length - 1]];
     }
-    // let props = {};
-    // if (openKeys) {
-    //   props = {
-    //     openKeys,
-    //   };
-    // }
-    // const { handleOpenChange, style, menuData } = this.props;
-    return (
-      // <Menu
-      //   key="Menu"
-      //   mode="vertical"
-      //   theme="dark"
-      //   // onOpenChange={handleOpenChange}
-      //   selectedKeys={selectedKeys}
-      //   // style={style}
-      //   // className={styles.parMenu}
-      // // {...props}
-      // >
+    let props = {};
+    if (openKeys) {
+      props = {
+        openKeys,
+      };
+    }
+    const parItem = this.getParItem(menuData, selectedKeys);
+    // console.log(openKeys);
+    return parItem ? (
       <Fragment>
-        <ul
-          className={`ant-menu ant-menu-dark ant-menu-root ant-menu-vertical ${styles.parMenu} ${
-            parMenuEnter === true ? '' : 'ant-menu-inline-collapsed'
-          }`}
-          onMouseEnter={() => {
-            this.setState({
-              parMenuEnter: true,
-            });
-          }}
-          onMouseLeave={() => {
-            this.setState({
-              parMenuEnter: false,
-            });
-          }}
+        <div className={styles.subMenuHead}>
+          {getIcon(parItem.icon, styles.subMenuHeadIcon)}
+          {parItem.name}
+        </div>
+        <Menu
+          key="Menu"
+          mode="inline"
+          selectedKeys={selectedKeys}
+          onOpenChange={handleOpenChange}
+          className={styles.subMenu}
+          {...props}
         >
-          {this.getParMenuItems(menuData, selectedKeys[0])}
-        </ul>
+          {this.getNavMenuItems(parItem.children)}
+        </Menu>
+        {/* <ul className={`${styles.subMenu} ${collapsed === true ? styles.subMenuCollapsed : ''}`}>
+            <a href="">优惠券</a>
+          </li>
+          <li>
+            <a href="">优惠券</a>
+          </li>
+          <li>
+            <a href="">优惠券</a>
+          </li>
+        </ul> */}
       </Fragment>
-      // {/* </Menu> */}
-    );
+    ) : null;
   }
 }

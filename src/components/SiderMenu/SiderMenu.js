@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import Debounce from 'lodash-decorators/debounce';
 import { urlToList } from '@/utils/utils';
 // import Link from 'umi/link';
+import SubMenu from './SubMenu';
 import styles from './index.less';
 import BaseMenu, { getMenuMatches } from './BaseMenu';
 import SiderMenuForPc from './SiderMenuForPc';
@@ -105,6 +106,7 @@ export default class SiderMenu extends PureComponent {
   };
 
   handleOpenChange = openKeys => {
+    console.log(openKeys);
     const moreThanOne = openKeys.filter(openKey => this.isMainMenu(openKey)).length > 1;
     this.setState({
       openKeys: moreThanOne ? [openKeys.pop()] : [...openKeys],
@@ -186,7 +188,15 @@ export default class SiderMenu extends PureComponent {
             {...defaultProps}
           />
         ) : (
-          <SiderMenuForPc {...this.props} />
+          <div className={styles.menuCon}>
+            <SubMenu
+              handleOpenChange={this.handleOpenChange}
+              onOpenChange={this.handleOpenChange}
+              openKeys={openKeys}
+              {...this.props}
+            />
+            <SiderMenuForPc {...this.props} />
+          </div>
         )}
       </Sider>
     );
