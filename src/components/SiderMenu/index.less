@@ -91,6 +91,11 @@
 .menuCon {
   padding-left: 60px;
   overflow: hidden;
+  :global {
+    .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+      background-color: #fff;
+    }
+  }
 }
 
 .parMenu {
@@ -123,9 +128,15 @@
         vertical-align: -0.16em;
       }
     }
+    .ant-menu-item-selected {
+      background-color: #1890ff !important;
+    }
   }
   &.ant-menu-inline-collapsed {
     :global {
+      .ant-menu-sub {
+        display: none;
+      }
       .ant-menu-item {
         .anticon {
           font-size: 16px;
@@ -166,20 +177,32 @@
 
 .subMenu {
   background-color: transparent;
+  border-right: 0 none transparent;
+
   :global {
+    .ant-menu-submenu > .ant-menu {
+      background-color: transparent;
+    }
+    .ant-menu-item:after,
+    .ant-menu-item-selected:after {
+      display: none;
+    }
     .ant-menu-item:not(:last-child),
     .ant-menu-item {
       margin: 0;
       font-size: 16px;
       color: #333;
+      width: 100%;
+    }
+    .ant-menu-item:active {
+      background-color: #fff;
+    }
+    .ant-menu-item:hover {
+      background-color: rgba(255, 255, 255, 0.5);
     }
     .ant-menu-submenu-title {
       font-size: 16px;
       margin: 0;
-    }
-
-    .ant-menu-submenu-arrow {
-      transform: scale(1.2);
     }
   }
 }
