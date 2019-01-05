@@ -106,7 +106,7 @@ export default class SiderMenu extends PureComponent {
   };
 
   handleOpenChange = openKeys => {
-    console.log(openKeys);
+    // console.log(openKeys);
     const moreThanOne = openKeys.filter(openKey => this.isMainMenu(openKey)).length > 1;
     this.setState({
       openKeys: moreThanOne ? [openKeys.pop()] : [...openKeys],

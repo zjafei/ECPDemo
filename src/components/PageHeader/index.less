@@ -2,8 +2,8 @@
 
 .pageHeader {
   background: @component-background;
-  padding: 16px 32px 0 32px;
-  border-bottom: @border-width-base @border-style-base @border-color-split;
+  padding: 13px 20px 0 20px;
+  border-bottom: @border-width-base @border-style-base #dedede;
   .wide {
     max-width: 1200px;
     margin: auto;
@@ -18,7 +18,15 @@
   }
 
   .breadcrumb {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+    & > span {
+      display: none;
+    }
+    & > span:last-child {
+      display: inline-block;
+      font-size: 16px;
+      color: #333;
+    }
   }
 
   .tabs {

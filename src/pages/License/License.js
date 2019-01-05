@@ -1,14 +1,14 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Card, Row, Col, Input, Form, Button } from 'antd';
+import { Row, Col, Input, Form, Button } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import dict from '@/utils/dict';
-import TableList from '@/components/TableList';
-import ListHeaderForm from '@/components/ListHeaderForm';
+// import TableList from '@/components/TableList';
+// import ListHeaderForm from '@/components/ListHeaderForm';
 import Select from '@/components/Select';
-import MyModal from '@/components/Modal';
-import PageTitle from '@/components/PageTitle';
-import LicenseForm from './components/LicenseForm';
+// import MyModal from '@/components/Modal';
+// import PageTitle from '@/components/PageTitle';
+// import LicenseForm from './components/LicenseForm';
 // import PageTitle from '@/components/PageTitle';
 
 const FormItem = Form.Item;
@@ -114,139 +114,97 @@ class Page extends PureComponent {
   }
 
   render() {
-    const {
-      dispatch,
-      getListIsLoading,
-      licenseCreateIsLoading,
-      route: { title },
-      license: {
-        visible,
-        formData,
-        listParams: { page },
-        list: { data: listData, totalItemCount },
-      },
-    } = this.props;
-
-    const listProps = {
-      columns: [
-        {
-          title: '序号',
-          key: '#',
-          width: 80,
-          render: (text, record, index) => <Fragment>{(page - 1) * 10 + index + 1}</Fragment>,
-        },
-        {
-          title: 'RFID',
-          key: 'RFID',
-          render: (text, record) => {
-            return <Fragment>{record.rfid}</Fragment>;
-          },
-        },
-        {
-          title: '数字牌号',
-          key: 'plateNumber',
-          render: (text, record) => {
-            return <Fragment>{record.plateNumber}</Fragment>;
-          },
-        },
-        {
-          title: '生产状态',
-          key: 'produceState',
-          render: (text, record) => {
-            let flatClass = '';
-            switch (record.produceState) {
-              case dict.LICENSE_PRODUCE_STATE_ALLOCATED:
-                flatClass = 'warning_flat';
-                break;
-              case dict.LICENSE_PRODUCE_STATE_CREATED:
-                flatClass = 'success_flat';
-                break;
-              case dict.LICENSE_PRODUCE_STATE_BINDED:
-                flatClass = 'primary_flat';
-                break;
-              case dict.LICENSE_PRODUCE_STATE_VALID:
-                flatClass = 'primary_flat';
-                break;
-              default:
-                break;
-            }
-            return (
-              <Fragment>
-                <i
-                  style={{
-                    verticalAlign: 1,
-                    marginRight: 5,
-                  }}
-                  className={`point ${flatClass}`}
-                />
-                {dict.licenseProduceState[record.produceState]}
-              </Fragment>
-            );
-          },
-        },
-        {
-          title: '机械ID',
-          key: 'id',
-          render: (text, record) => {
-            return <Fragment>{record.id}</Fragment>;
-          },
-        },
-        {
-          title: '批号参数',
-          key: 'createBatchNo',
-          render: (text, record) => {
-            return <Fragment>{record.createBatchNo}</Fragment>;
-          },
-        },
-      ],
-      dataSource: listData,
-      loading: getListIsLoading,
-      pagination: {
-        total: totalItemCount,
-        current: page,
-      },
-      style: {
-        marginTop: 24,
-      },
-      onChange: pagination => {
-        dispatch({
-          type: 'license/changeListParams',
-          payload: {
-            page: pagination.current,
-          },
-        });
-      },
-    };
-    return (
-      <PageHeaderWrapper>
-        <Card bordered={false} bodyStyle={{ paddingBottom: 0, paddingLeft: 20, paddingRight: 20 }}>
-          <PageTitle>{title}</PageTitle>
-          <ListHeaderForm>{this.renderAdvancedForm()}</ListHeaderForm>
-          <TableList {...listProps} />
-        </Card>
-        <MyModal
-          title="批量录入"
-          visible={visible}
-          confirmLoading={licenseCreateIsLoading}
-          onOk={(data, resetFields) => {
-            dispatch({
-              type: 'license/licenseCreate',
-              payload: {
-                data: { ...data.license },
-                resetFields,
-              },
-            });
-          }}
-          onClose={() => {
-            dispatch({
-              type: 'license/closeForm',
-            });
-          }}
-        >
-          <LicenseForm data={formData} />
-        </MyModal>
-      </PageHeaderWrapper>
-    );
+    // const listProps = {
+    //   columns: [
+    //     {
+    //       title: '序号',
+    //       key: '#',
+    //       width: 80,
+    //       render: (text, record, index) => <Fragment>{(page - 1) * 10 + index + 1}</Fragment>,
+    //     },
+    //     {
+    //       title: 'RFID',
+    //       key: 'RFID',
+    //       render: (text, record) => {
+    //         return <Fragment>{record.rfid}</Fragment>;
+    //       },
+    //     },
+    //     {
+    //       title: '数字牌号',
+    //       key: 'plateNumber',
+    //       render: (text, record) => {
+    //         return <Fragment>{record.plateNumber}</Fragment>;
+    //       },
+    //     },
+    //     {
+    //       title: '生产状态',
+    //       key: 'produceState',
+    //       render: (text, record) => {
+    //         let flatClass = '';
+    //         switch (record.produceState) {
+    //           case dict.LICENSE_PRODUCE_STATE_ALLOCATED:
+    //             flatClass = 'warning_flat';
+    //             break;
+    //           case dict.LICENSE_PRODUCE_STATE_CREATED:
+    //             flatClass = 'success_flat';
+    //             break;
+    //           case dict.LICENSE_PRODUCE_STATE_BINDED:
+    //             flatClass = 'primary_flat';
+    //             break;
+    //           case dict.LICENSE_PRODUCE_STATE_VALID:
+    //             flatClass = 'primary_flat';
+    //             break;
+    //           default:
+    //             break;
+    //         }
+    //         return (
+    //           <Fragment>
+    //             <i
+    //               style={{
+    //                 verticalAlign: 1,
+    //                 marginRight: 5,
+    //               }}
+    //               className={`point ${flatClass}`}
+    //             />
+    //             {dict.licenseProduceState[record.produceState]}
+    //           </Fragment>
+    //         );
+    //       },
+    //     },
+    //     {
+    //       title: '机械ID',
+    //       key: 'id',
+    //       render: (text, record) => {
+    //         return <Fragment>{record.id}</Fragment>;
+    //       },
+    //     },
+    //     {
+    //       title: '批号参数',
+    //       key: 'createBatchNo',
+    //       render: (text, record) => {
+    //         return <Fragment>{record.createBatchNo}</Fragment>;
+    //       },
+    //     },
+    //   ],
+    //   dataSource: listData,
+    //   loading: getListIsLoading,
+    //   pagination: {
+    //     total: totalItemCount,
+    //     current: page,
+    //   },
+    //   style: {
+    //     marginTop: 24,
+    //   },
+    //   onChange: pagination => {
+    //     dispatch({
+    //       type: 'license/changeListParams',
+    //       payload: {
+    //         page: pagination.current,
+    //       },
+    //     });
+    //   },
+    // };
+    return <PageHeaderWrapper>ok</PageHeaderWrapper>;
   }
 }
 
