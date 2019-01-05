@@ -173,7 +173,7 @@ export default class SiderMenu extends PureComponent {
         </div> */}
         {hideSidebarIcon === false && (
           <i
-            className={styles.showMore}
+            className={`${styles.showMore} ${collapsed === true ? styles.showMoreCur : ''}`}
             onClick={this.toggle}
             style={collapsed === true ? { left: 60 } : { right: 0 }}
           />

@@ -150,15 +150,20 @@
   position: absolute;
   width: 9px;
   height: 40px;
-  background-color: red;
+  background: url('../../assets/shorMoreBg.png') left center no-repeat;
+  background-size: cover;
   cursor: pointer;
   top: 50%;
   margin-top: -82px;
   transition: ease width 0.2s;
-  transition-timing-function: cubic-bezier(0.93, 0.91, 0.24, 1.62);
   &:hover {
     width: 18px;
   }
+}
+
+.showMoreCur {
+  background: url('../../assets/shorMoreBgCur.png') right center no-repeat;
+  background-size: cover;
 }
 
 .subMenuHead {
