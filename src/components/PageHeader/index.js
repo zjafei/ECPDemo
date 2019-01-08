@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Tabs, Skeleton } from 'antd';
 import { connect } from 'dva';
-import { enquireScreen } from 'enquire-js';
+import { enquireScreen, unenquireScreen } from 'enquire-js';
 import classNames from 'classnames';
 import styles from './index.less';
 import BreadcrumbView from './breadcrumb';
@@ -16,6 +16,7 @@ class PageHeader extends PureComponent {
     // rendering: true,
     isMobile: false,
   };
+
   componentDidMount() {
     this.enquireHandler = enquireScreen(mobile => {
       const { isMobile } = this.state;
@@ -25,6 +26,11 @@ class PageHeader extends PureComponent {
         });
       }
     });
+  }
+
+  componentWillUnmount() {
+    // cancelAnimationFrame(this.renderRef);
+    unenquireScreen(this.enquireHandler);
   }
 
   onChange = key => {
