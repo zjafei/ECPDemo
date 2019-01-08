@@ -1,11 +1,32 @@
 import React, { PureComponent } from 'react';
 import { Tabs, Skeleton } from 'antd';
+import { connect } from 'dva';
+import { enquireScreen } from 'enquire-js';
 import classNames from 'classnames';
 import styles from './index.less';
 import BreadcrumbView from './breadcrumb';
 
 const { TabPane } = Tabs;
-export default class PageHeader extends PureComponent {
+
+@connect(({ global }) => ({
+  collapsed: global.collapsed,
+}))
+class PageHeader extends PureComponent {
+  state = {
+    // rendering: true,
+    isMobile: false,
+  };
+  componentDidMount() {
+    this.enquireHandler = enquireScreen(mobile => {
+      const { isMobile } = this.state;
+      if (isMobile !== mobile) {
+        this.setState({
+          isMobile: mobile,
+        });
+      }
+    });
+  }
+
   onChange = key => {
     const { onTabChange } = this.props;
     if (onTabChange) {
@@ -28,7 +49,10 @@ export default class PageHeader extends PureComponent {
       loading = false,
       wide = false,
       hiddenBreadcrumb = false,
+      collapsed,
     } = this.props;
+
+    const { isMobile } = this.state;
 
     const clsString = classNames(styles.pageHeader, className);
     const activeKeyProps = {};
@@ -39,7 +63,12 @@ export default class PageHeader extends PureComponent {
       activeKeyProps.activeKey = tabActiveKey;
     }
     return (
-      <div className={clsString}>
+      <div
+        className={clsString}
+        style={{
+          left: isMobile ? 0 : collapsed ? 60 : 260,
+        }}
+      >
         <div className={wide ? styles.wide : ''}>
           <Skeleton
             loading={loading}
@@ -80,3 +109,5 @@ export default class PageHeader extends PureComponent {
     );
   }
 }
+
+export default PageHeader;
