@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { Layout } from 'antd';
 import pathToRegexp from 'path-to-regexp';
 import classNames from 'classnames';
@@ -171,32 +171,34 @@ export default class SiderMenu extends PureComponent {
           <h1>电商管理系统</h1>
           </Link>
         </div> */}
-        {hideSidebarIcon === false && (
-          <i
-            className={`${styles.showMore} ${collapsed === true ? styles.showMoreCur : ''}`}
-            onClick={this.toggle}
-            style={collapsed === true ? { left: 60 } : { right: 0 }}
-          />
-        )}
         {isMobile === true ? (
           <BaseMenu
             {...this.props}
             mode="inline"
             handleOpenChange={this.handleOpenChange}
             onOpenChange={this.handleOpenChange}
-            style={{ padding: '16px 0', width: '100%', overflowX: 'hidden' }}
+            style={{ padding: '16px 0', width: '100%', overflowX: 'hidden', height: '100vh' }}
             {...defaultProps}
           />
         ) : (
-          <div className={styles.menuCon}>
-            <SubMenu
-              handleOpenChange={this.handleOpenChange}
-              onOpenChange={this.handleOpenChange}
-              openKeys={openKeys}
-              {...this.props}
-            />
-            <SiderMenuForPc {...this.props} />
-          </div>
+          <Fragment>
+            {hideSidebarIcon === false && (
+              <i
+                className={`${styles.showMore} ${collapsed === true ? styles.showMoreCur : ''}`}
+                onClick={this.toggle}
+                style={collapsed === true ? { left: 60 } : { right: 0 }}
+              />
+            )}
+            <div className={styles.menuCon}>
+              <SubMenu
+                handleOpenChange={this.handleOpenChange}
+                onOpenChange={this.handleOpenChange}
+                openKeys={openKeys}
+                {...this.props}
+              />
+              <SiderMenuForPc {...this.props} />
+            </div>
+          </Fragment>
         )}
       </Sider>
     );
